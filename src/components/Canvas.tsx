@@ -14,7 +14,7 @@ const Canvas: React.FC<Props> = ({ width, height, zoom, components }) => {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 
 	const draw = useCallback((context: CanvasRenderingContext2D) => {
-		context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+		context.clearRect(0, 0, context.canvas.width / zoom, context.canvas.height / zoom);
 
 		if (components)
 			components.forEach(component => component.draw(context, zoom));

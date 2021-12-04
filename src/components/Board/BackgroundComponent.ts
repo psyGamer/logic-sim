@@ -16,36 +16,34 @@ class BackgroundComponent extends CanvasComponent {
 		this.tileSpacing = tileSpacing;
 	}
 
-	public draw(context: CanvasRenderingContext2D): void {
+	public draw(context: CanvasRenderingContext2D, zoom: number): void {
 		context.fillStyle = '#000';
 
-		const verticalPinCount = Math.ceil(this.camera.width / (this.tileSize + this.tileSpacing));
-		const horizontalPinCount = Math.ceil(this.camera.height / (this.tileSize + this.tileSpacing));
+		const cameraWidth = this.camera.width / zoom;
+		const cameraHeight = this.camera.height / zoom;
 
-		for (let x = 0; x < this.camera.width; x += this.tileSize + this.tileSpacing) {
-			for (let y = 0; y < this.camera.height; y += this.tileSize + this.tileSpacing) {
+		const verticalPinCount = Math.ceil(cameraWidth / (this.tileSize + this.tileSpacing));
+		const horizontalPinCount = Math.ceil(cameraHeight / (this.tileSize + this.tileSpacing));
+
+		for (let x = 0; x < cameraWidth; x += this.tileSize + this.tileSpacing) {
+			for (let y = 0; y < cameraHeight; y += this.tileSize + this.tileSpacing) {
 				let actualX = x + this.camera.xPos;
 				let actualY = y + this.camera.yPos;
 
 				actualX %= verticalPinCount * (this.tileSize + this.tileSpacing);
 				actualY %= horizontalPinCount * (this.tileSize + this.tileSpacing);
 
-				if (x === 0 && y === 0 && this.camera.zoom !== 1) {
-					console.log(x, y, this.camera.xPos, this.camera.yPos);
-					console.log('Before wrapping: ', actualX, actualY);
-				}
-
+				// Warp the coordinates to the other side of the board if they are off the screen
 				if (actualX + this.tileSize < 0) actualX += verticalPinCount * (this.tileSize + this.tileSpacing);
-				if (actualX > this.camera.width) actualX -= verticalPinCount * (this.tileSize + this.tileSpacing);
+				if (actualX > cameraWidth) actualX -= verticalPinCount * (this.tileSize + this.tileSpacing);
 
 				if (actualY + this.tileSize < 0) actualY += horizontalPinCount * (this.tileSize + this.tileSpacing);
-				if (actualY > this.camera.height) actualY -= horizontalPinCount * (this.tileSize + this.tileSpacing);
+				if (actualY > cameraHeight) actualY -= horizontalPinCount * (this.tileSize + this.tileSpacing);
 
-				if (x === 0 && y === 0 && this.camera.zoom !== 1) {
-					console.log('After wrapping: ', x, y, actualX, actualY);
-				}
-
-				context.fillRect(actualX, actualY, this.tileSize, this.tileSize);
+				// Start drawing
+				context.beginPath();
+				context.arc(actualX, actualY, this.tileSize, 0, 2 * Math.PI);
+				context.fill();
 			}
 		}
 	}
