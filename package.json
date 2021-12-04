@@ -16,7 +16,9 @@
 	},
 	"scripts": {
 		"start:web": "react-scripts start",
-		"build:web": "set PUBLIC_URL=./&& react-scripts build"
+		"build:web": "set PUBLIC_URL=./&& react-scripts build",
+		"start:desktop": "yarn build:desktop && yarn electron ./build/electron.js",
+		"build:desktop": "yarn build:web && tsc -p electron/tsconfig.json"
 	},
 	"eslintConfig": {
 		"extends": [

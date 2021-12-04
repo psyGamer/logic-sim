@@ -1,0 +1,20 @@
+{
+	"compilerOptions": {
+		"module": "commonjs",
+		"target": "es5",
+
+		"noImplicitAny": true,
+		"sourceMap": true,
+		"removeComments": false,
+		"preserveConstEnums": true,
+		"suppressImplicitAnyIndexErrors": true,
+
+		"outDir": "../build/",
+		"baseUrl": ".",
+		"paths": {
+			"*": ["node_modules/*"]
+		}
+	},
+
+	"include": ["**/*.ts"]
+}
