@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 
 import CanvasComponent from '../types/CanvasComponent';
 
@@ -12,38 +12,22 @@ interface Props {
 const Canvas: React.FC<Props> = ({ width, height, components }) => {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 
-	const draw = (ctx: CanvasRenderingContext2D, frameCount: number) => {
-		ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+	const canvas = canvasRef.current;
+	const context = canvas?.getContext('2d');
+
+	const draw = useCallback((context: CanvasRenderingContext2D) => {
+		context.clearRect(0, 0, context.canvas.width, context.canvas.height);
 
 		if (components)
-			components.forEach(component => component.draw(ctx));
-	}
+			components.forEach(component => component.draw(context));
+	}, [components]);
 
 	useEffect(() => {
-		const canvas = canvasRef.current;
-		const context = canvas?.getContext('2d');
-
-		let frameCount = 0;
-		let animationFrameID: number;
-
 		if (!canvas || !context)
 			return;
 
-		const drawFrame = () => {
-			frameCount++;
-
-			draw(context, frameCount);
-
-			animationFrameID = window.requestAnimationFrame(drawFrame);
-		};
-
-		drawFrame();
-
-		return () => {
-			window.cancelAnimationFrame(animationFrameID);
-		};
-
-	}, [draw]);
+		draw(context);
+	}, [canvas, context, draw]);
 
 	return (
 		<div style={{ width: '100vw', height: '100vh', overflow: 'hidden' }}>
