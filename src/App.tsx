@@ -34,8 +34,8 @@ const App: React.FC = () => {
 				...camera,
 			}
 
-			const movementSpeed = 100;
-			const zoomSpeed = 0.5;
+			const movementSpeed = 10;
+			const zoomSpeed = 0.1;
 
 			switch (event.key) {
 				case 'ArrowUp':
@@ -76,8 +76,8 @@ const App: React.FC = () => {
 		<Board
 			camera={camera}
 
-			tileSize={20}
-			tileSpacing={60}
+			tileSize={5}
+			tileSpacing={40}
 		/>
 	);
 };

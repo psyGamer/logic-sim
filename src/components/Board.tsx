@@ -18,6 +18,7 @@ const Board: React.FC<Props> = ({ camera, tileSize, tileSpacing }) => {
 		<Canvas
 			width={camera.width}
 			height={camera.height}
+			zoom={camera.zoom}
 
 			components={[
 				new BackgroundComponent(camera, tileSize, tileSpacing),
