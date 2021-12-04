@@ -1,12 +1,15 @@
 import React, { useEffect, useRef } from 'react';
 
-import IDrawableComponent from '../types/IDrawableComponent';
+import CanvasComponent from '../types/CanvasComponent';
 
 interface Props {
-	components?: IDrawableComponent[];
+	width: number;
+	height: number;
+
+	components?: CanvasComponent[];
 };
 
-const Canvas: React.FC<Props> = ({ components }) => {
+const Canvas: React.FC<Props> = ({ width, height, components }) => {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 
 	const draw = (ctx: CanvasRenderingContext2D, frameCount: number) => {
@@ -43,7 +46,9 @@ const Canvas: React.FC<Props> = ({ components }) => {
 	}, [draw]);
 
 	return (
-		<canvas ref={canvasRef}></canvas>
+		<div style={{ width: '100vw', height: '100vh', overflow: 'hidden' }}>
+			<canvas ref={canvasRef} width={width} height={height}></canvas>
+		</div>
 	);
 };
 
