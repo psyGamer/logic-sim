@@ -60,6 +60,10 @@ const App: React.FC = () => {
 					break;
 			}
 
+			// Clamp camera zoom
+			newCamera.zoom = Math.max(0.1, newCamera.zoom);
+			newCamera.zoom = Math.min(3, newCamera.zoom);
+
 			setCamera(newCamera);
 		};
 
